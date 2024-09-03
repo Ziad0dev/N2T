@@ -5,42 +5,39 @@
 
 // Multiplies R0 and R1 and stores the result in R2.
 // (R0, R1, R2 refer to RAM[0], RAM[1], and RAM[2], respectively.)
-//
-// This program only needs to handle arguments that satisfy
-// R0 >= 0, R1 >= 0, and R0*R1 < 32768.
-  // if (i=0, i < n; i++)
-  // if (i is R1) end
- // 
+
 // Put your code here.
-  //init R2 at memadress 0
-  @R2
-  M=0 
 
-  //init i 
+// initialize R2 = 0
+@R2
+M = 0
+
+// initialize i = 0
+@i
+M = 0
+
+(LOOP)
+  // if (i==R1) goto END
   @i
-  M=0 
-  (loop)
-  // if (i==R1) end
-  @i 
-  D=M
+  D = M
   @R1
-  D=D-M
+  D = D - M
   @END
-  D; JEQ
+  D;JEQ
 
-  // R2=R2+R0
+  // R2 = R2 + R0
   @R0
-  D=M
+  D = M
   @R2
-  M=M+D
-  // iterate i++
+  M = M + D
 
+  // i++
   @i
-  M=M+1
+  M = M + 1
 
   @LOOP
-  0; JMP
+  0;JMP
 
-  (END)
+(END)
   @END
   0;JMP
