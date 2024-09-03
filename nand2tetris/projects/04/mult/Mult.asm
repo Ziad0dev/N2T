@@ -8,5 +8,39 @@
 //
 // This program only needs to handle arguments that satisfy
 // R0 >= 0, R1 >= 0, and R0*R1 < 32768.
-
+  // if (i=0, i < n; i++)
+  // if (i is R1) end
+ // 
 // Put your code here.
+  //init R2 at memadress 0
+  @R2
+  M=0 
+
+  //init i 
+  @i
+  M=0 
+  (loop)
+  // if (i==R1) end
+  @i 
+  D=M
+  @R1
+  D=D-M
+  @END
+  D; JEQ
+
+  // R2=R2+R0
+  @R0
+  D=M
+  @R2
+  M=M+D
+  // iterate i++
+
+  @i
+  M=M+1
+
+  @LOOP
+  0; JMP
+
+  (END)
+  @END
+  0;JMP
