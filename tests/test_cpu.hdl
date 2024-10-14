@@ -1,0 +1,16 @@
+CHip CPU {
+  IN  inM[16].
+      instruction[16],
+      reset;
+
+  OUT outM[16].
+      writeM,
+      adressM[15],
+      pc[15];
+
+  PARTS:
+
+
+}
+
+
