@@ -64,7 +64,7 @@ CHIP CPU {
     Or16(a=false, b=ALUout, out=outM);
     And(a=Cinstruction, b=instruction[3], out=writeM);
     
-    // calc PCload & PCinc - whether to load PC with A reg
+    // calculating PCload & PCinc and checking whether to load PC with A reg
     And(a=ZRout, b=instruction[1], out=jeq);    // is zero and jump if zero
     And(a=NGout, b=instruction[2], out=jlt);    // is neg and jump if neg
     Or(a=ZRout, b=NGout, out=zeroOrNeg);
