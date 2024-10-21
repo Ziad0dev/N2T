@@ -1,6 +1,6 @@
 #!/usr/local/bin/python3
 # To run use Assembler.py <file.asm>
-import Parser, Code, SymTable, sys
+import Parser, BitCode, SymTable, sys
 
 class Assembler(object):
     def __init__(self):
@@ -21,7 +21,7 @@ class Assembler(object):
     def Pass_1(self, infile, outfile):
         parser = Parser.Parser(infile)
         outfile = open(outfile, 'w')
-        code = Code.Code()
+        code = Code.BitCode()
         while parser.has_more_commnads():
             parser.advance()
             cmd = parser.command_type()
