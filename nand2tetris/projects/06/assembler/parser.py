@@ -28,13 +28,14 @@ class Parser(object):
         self.__init_cmd_info()
         self.lex.next_command()
         tok, val = self.lex.cur_token
-
-    if tok == Lex.OP and val == '@':
-        self._a_instr()
-    elif tok == Lex.OP and val == '(':
-        self._s_instr()
-    else:
-        self._c_instr(tok, val)
+        
+        if tok == Lex.OP and val == '@':
+            self._a_instr()
+        
+        elif tok == Lex.OP and val == '(':
+            self._s_instr()
+        else:
+            self._c_instr(tok, val)
 
 # extracted parts
     def command_type(self):
@@ -66,13 +67,13 @@ class Parser(object):
 
     def _get_dest(self, tok1, val1):
          tok2, val2 = self.lex.peek_token()
-        if tok2 == Lex.OP and val2 == '=':
+         if tok2 == Lex.OP and val2 == '=':
             self.lex.next_token()
             self._dest = val1
             comp_tok, comp_val = self.lex.next_token()
-        else:
+         else:
             comp_tok, comp_val = tok1, val1
-        return (comp_tok, comp_val)
+            return (comp_tok, comp_val)
     
     # Get the 'comp' part - must be present.
     def _get_comp(self, tok, val):
