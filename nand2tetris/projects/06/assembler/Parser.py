@@ -1,5 +1,5 @@
 #!/usr/local/bin/python3
-import Lex
+import Lexer
 
 class Parser(object):
     A_instr = 0
@@ -7,7 +7,7 @@ class Parser(object):
     S_instr = 2
 
     def __init__(self, file):
-        self.lex = Lex.Lex(file)
+        self.lex = Lexer.lex(file)
         self.__init_cmd_info()
 
     def __init_cmd_info(self):
@@ -29,10 +29,10 @@ class Parser(object):
         self.lex.next_command()
         tok, val = self.lex.cur_token
         
-        if tok == Lex.OP and val == '@':
+        if tok == Lexer.OP and val == '@':
             self._a_instr()
         
-        elif tok == Lex.OP and val == '(':
+        elif tok == Lexer.OP and val == '(':
             self._s_instr()
         else:
             self._c_instr(tok, val)
@@ -67,7 +67,7 @@ class Parser(object):
 
     def _get_dest(self, tok1, val1):
          tok2, val2 = self.lex.peek_token()
-         if tok2 == Lex.OP and val2 == '=':
+         if tok2 == Lexer.OP and val2 == '=':
             self.lex.next_token()
             self._dest = val1
             comp_tok, comp_val = self.lex.next_token()
@@ -77,13 +77,13 @@ class Parser(object):
     
     # Get the 'comp' part - must be present.
     def _get_comp(self, tok, val):
-        if tok == Lex.OP and (val == '-' or val == '!'):
+        if tok == Lexer.OP and (val == '-' or val == '!'):
             tok2, val2 = self.lex.next_token()
             self._comp = val+val2
-        elif tok == Lex.NUM or tok == Lex.ID:
+        elif tok == Lexer.NUM or tok == Lex.ID:
             self._comp = val
             tok2, val2 = self.lex.peek_token()
-            if tok2 == Lex.OP and val2 != ';':
+            if tok2 == Lexer.OP and val2 != ';':
                 self.lex.next_token()
                 tok3, val3 = self.lex.next_token()
                 self._comp += val2+val3
@@ -91,7 +91,7 @@ class Parser(object):
     # Get the 'jump' part if any
     def _get_jump(self):
         tok, val = self.lex.next_token()
-        if tok == Lex.OP and val == ';':
+        if tok == Lexer.OP and val == ';':
             jump_tok, jump_val = self.lex.next_token()
             self._jmp = jump_val
 
