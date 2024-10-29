@@ -1,10 +1,13 @@
 #!/usr/local/bin/python3
 # To run use Assembler.py <file.asm>
-import Parser, BitCode, SymTable, sys
-import pdb; pdb.set_trace()
+from Parser import Parser
+from BitCode import Code
+from SymTable import SymTable
+import sys
+#import pdb; pdb.set_trace()
 class Assembler(object):
     def __init__(self):
-        self.symb = SymTable,SymTable()
+        self.symb = SymTable.SymTable()
         self.symb.addr = 16
     def initialpass(self, file):
         parser = Parser.Parser(file)
@@ -25,7 +28,7 @@ class Assembler(object):
             parser.advance()
             cmd = parser.command_type()
             if cmd == parser.A_instr:
-                outfile.write(code.gen_a(self.get_addr(parser.symb)) + '\n')
+                outfile.write(code.gen_a(self._get_adress(parser.symb)) + '\n')
             elif cmd == parser.C_instr:
                 outfile.write(code.gen_c(parser.dest(), parser.comp(), parser.jmp()) + '\n')
             elif cmd == parser.S_instr:
@@ -34,14 +37,14 @@ class Assembler(object):
 
         # search for symb or num address
 
-        def get_addr(self, symb):
+        def _get_adress(self, symb):
             if symb.isdigit():
                 return symb
             else:
                 if not self.symb.contains(symb):
                     self.symb.add_entry(symb, self.symb_addr)
                     self.symb_addr += 1
-                return self.symb.get_addr(symb)
+                return self.symb._get_adress(symb)
 
 
         # run assembly 
@@ -51,17 +54,16 @@ class Assembler(object):
 
     def _outfile(self, infile):
         if infile.endswith('.asm'):
-            return infile.replace('.asm', 'hack')
+            return infile.replace('.asm', '.hack')
         else:
             return infile + '.hack'
-main():
+def main():
     if len(sys.argv) != 2:
-        print("Err: Correct usage Python3 assebmler.py <arguemt> in this case the asm file")
+        print("Use: Assembler.py file.asm")
     else:
         infile = sys.argv[1]
         asm = Assembler()
         asm.assemble(infile)
 
-
-main()
-
+if __name__ == "__main__":
+    main()

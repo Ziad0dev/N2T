@@ -1,6 +1,6 @@
 #!/usr/local/bin/python3
 
-class SymbTable(object):
+class SymTable(object):
     def __init__(self):
         self._symbols \
             = {'SP':0, 'LCL':1, 'ARG':2, 'THIS':3, 'THAT':4,
