@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 # To run use Assembler.py <file.asm>
 from Parser import Parser
-from BitCode import Code
+from Code import BCode
 from SymTable import SymTable
 import sys
 #import pdb; pdb.set_trace()
@@ -23,7 +23,7 @@ class Assembler(object):
     def Pass_1(self, infile, outfile):
         parser = Parser.Parser(infile)
         outfile = open(outfile, 'w')
-        code = BitCode.BitCode()
+        code = BCode.BitCode()
         while parser.has_more_commnads():
             parser.advance()
             cmd = parser.command_type()
