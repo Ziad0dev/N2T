@@ -30,6 +30,12 @@ class Parser:
             return "C_PUSH"
         elif op == "pop":
             return "C_POP"
+        elif op == "label":
+            return "C_LABEl"
+        elif op == "goto":
+            return "C_goto"
+        elif op == "if-goto":
+            return "C_IF"
         else:
             raise ValueError(f"Unknown command {op}")
 
