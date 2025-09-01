@@ -137,13 +137,31 @@ class CodeWriter:
             f"({label_true})\n@SP\nA=M\nM=-1\n"
             f"({label_end})\n@SP\nM=M+1\n"
         )
+    def write_label(self, label):
+        self.file.write(f"// label {label}\n")
+        self.file.write(f"({label})\n")
+
+    def write_goto(self, label):
+        self.file.write(f"// goto {label}\n")
+        self.file.write(f"@{label})\n0;JMP\n")
+
+    def write_if(self, label):
+        self.file.write(f"// if-goto {label}\n")
+        self.file.write(
+            "@SP\n"
+            "M=M-1\n"
+            "A=M\n"
+            "D=M\n"
+            f"@{label}\n"
+            "D;JNE\n"
+        )
 
     def close(self):
         self.file.close()
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: python vmtranslator.py MyProgram.vm")
+        print("Usage: python3 vmtranslator.py MyProgram.vm")
         return
     input_file = sys.argv[1]
     output_file = input_file.replace(".vm", ".asm")
@@ -158,7 +176,12 @@ def main():
             codewriter.write_arithmetic(parser.arg1())
         elif ctype in ("C_PUSH", "C_POP"):
             codewriter.write_push_pop(ctype, parser.arg1(), parser.arg2())
-
+        elif ctype == "C_LABEL":
+            codewriter.write_label(parser.arg1())
+        elif ctype == "C_GOTO":
+            codewriter.write_goto(parser.arg1())
+        elif ctype == "C_if":
+            codewriter.write_if(parser.arg1())
     parser.close()
     codewriter.close()
 
