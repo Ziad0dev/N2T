@@ -31,11 +31,17 @@ class Parser:
         elif op == "pop":
             return "C_POP"
         elif op == "label":
-            return "C_LABEl"
+            return "C_LABEL"
         elif op == "goto":
-            return "C_goto"
+            return "C_GOTO"
         elif op == "if-goto":
             return "C_IF"
+        elif op == "function":
+            return "C_FUNCTION"
+        elif op == "call":
+            return "C_CALL"
+        elif op == "return":
+            return "C_RETURN"
         else:
             raise ValueError(f"Unknown command {op}")
 
@@ -68,6 +74,8 @@ class CodeWriter:
         self.file = open(output_file, "w")
         self.filename = output_file.split(".")[0]
         self.label_counter = 0
+        self.current_function = None
+        self.call_counter = 0
 
     def write_arithmetic(self, command):
         if command == "add":
@@ -155,13 +163,75 @@ class CodeWriter:
             f"@{label}\n"
             "D;JNE\n"
         )
+    def write_function(self, function_name, num_locals):
+        self.current_function = function_name
+        self.file.write(f"// function {function_name} {num_locals}\n")
+        self.file.write(f"({function_name})\n")
+
+        for i in range(int(num_locals)):
+            self.file.write("@SP\n")
+            self.file.write("A=M\n")
+            self.file.write("M=0\n")
+            self.file.write("@SP\n")
+            self.file.write("M=M+1\n")
+
+    def write_call(self, function_name, num_args):
+
+        return_label = f"RETURN_{self.call_counter}"
+        self.call_counter += 1 
+        
+        self.file.write(f"// call {function_name} {num_args}\n")
+
+        self.file.write(f"@{return_label}\n")
+        self.file.write("D=A\n")
+        self.file.write("@SP\n")
+        self.file.write("A=M\n")
+        self.file.write("M=D\n")
+        self.file.write("@SP\n")
+        self.file.write("M=M+1\n")
+
+        self.file.write("@LCL\n")
+        self.file.write("D=M\n")
+        self.file.write("@SP\n")
+        self.file.write("A=M\n")
+        self.file.write("M=D\n")
+        self.file.write("@SP\n")
+        self.file.write("M=M+1\n")
+
+        self.file.write("@ARG\n")
+        self.file.write("D=M\n")
+        self.file.write("@SP\n")
+        self.file.write("A=M\n")
+        self.file.write("M=D\n")
+        self.file.write("@SP\n")
+        self.file.write("M=M+1\n")
+
+        self.file.write("@SP\n")
+        self.file.write("D=M\n")
+        self.file.write("@LCL\n")
+        self.file.write("M=D\n")
+
+        self.file.write(f"@{function_name}\n")
+        self.file.write("0;JMP\n")
+
+        self.file.write(f"({return_label})")
+
+    def write_return(self):
+        self.file.write("// return\n")
+
+        self.file.write("@LCL\n")
+        self.file.write("D=M\n")
+        self.file.write("@R13\n")
+        self.file.write("M=D\n")
+
+        self.file.write()
 
     def close(self):
         self.file.close()
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: python3 vmtranslator.py MyProgram.vm")
+        print("Usage: python3 vm_trans.py MyProgram.vm")
         return
     input_file = sys.argv[1]
     output_file = input_file.replace(".vm", ".asm")
@@ -180,10 +250,10 @@ def main():
             codewriter.write_label(parser.arg1())
         elif ctype == "C_GOTO":
             codewriter.write_goto(parser.arg1())
-        elif ctype == "C_if":
+        elif ctype == "C_IF":
             codewriter.write_if(parser.arg1())
     parser.close()
     codewriter.close()
 
 if __name__ == "__main__":
-    main()
+    main()  
