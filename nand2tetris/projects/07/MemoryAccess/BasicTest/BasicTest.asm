@@ -1,3 +1,4 @@
+// c_push constant 10
 @10
 D=A
 @SP
@@ -5,15 +6,21 @@ A=M
 M=D
 @SP
 M=M+1
+// c_pop local 0
+@0
+D=A
+@LCL
+D=M+D
+@R13
+M=D
 @SP
 M=M-1
 A=M
 D=M
-@LCL
-D=M
-@0
-A=D+A
+@R13
+A=M
 M=D
+// c_push constant 21
 @21
 D=A
 @SP
@@ -21,6 +28,7 @@ A=M
 M=D
 @SP
 M=M+1
+// c_push constant 22
 @22
 D=A
 @SP
@@ -28,24 +36,35 @@ A=M
 M=D
 @SP
 M=M+1
-@SP
-M=M-1
-A=M
-D=M
-@ARG
-D=M
+// c_pop argument 2
 @2
-A=D+A
+D=A
+@ARG
+D=M+D
+@R13
 M=D
 @SP
 M=M-1
 A=M
 D=M
-@ARG
-D=M
-@1
-A=D+A
+@R13
+A=M
 M=D
+// c_pop argument 1
+@1
+D=A
+@ARG
+D=M+D
+@R13
+M=D
+@SP
+M=M-1
+A=M
+D=M
+@R13
+A=M
+M=D
+// c_push constant 36
 @36
 D=A
 @SP
@@ -53,15 +72,21 @@ A=M
 M=D
 @SP
 M=M+1
+// c_pop this 6
+@6
+D=A
+@THIS
+D=M+D
+@R13
+M=D
 @SP
 M=M-1
 A=M
 D=M
-@THIS
-D=M
-@6
-A=D+A
+@R13
+A=M
 M=D
+// c_push constant 42
 @42
 D=A
 @SP
@@ -69,6 +94,7 @@ A=M
 M=D
 @SP
 M=M+1
+// c_push constant 45
 @45
 D=A
 @SP
@@ -76,24 +102,35 @@ A=M
 M=D
 @SP
 M=M+1
-@SP
-M=M-1
-A=M
-D=M
-@THAT
-D=M
+// c_pop that 5
 @5
-A=D+A
+D=A
+@THAT
+D=M+D
+@R13
 M=D
 @SP
 M=M-1
 A=M
 D=M
-@THAT
-D=M
-@2
-A=D+A
+@R13
+A=M
 M=D
+// c_pop that 2
+@2
+D=A
+@THAT
+D=M+D
+@R13
+M=D
+@SP
+M=M-1
+A=M
+D=M
+@R13
+A=M
+M=D
+// c_push constant 510
 @510
 D=A
 @SP
@@ -101,32 +138,36 @@ A=M
 M=D
 @SP
 M=M+1
+// c_pop temp 6
 @SP
 M=M-1
 A=M
 D=M
 @11
 M=D
-@LCL
-D=M
+// c_push local 0
 @0
-A=D+A
+D=A
+@LCL
+A=M+D
 D=M
 @SP
 A=M
 M=D
 @SP
 M=M+1
-@THAT
-D=M
+// c_push that 5
 @5
-A=D+A
+D=A
+@THAT
+A=M+D
 D=M
 @SP
 A=M
 M=D
 @SP
 M=M+1
+// add
 @SP
 M=M-1
 A=M
@@ -137,16 +178,18 @@ A=M
 M=M+D
 @SP
 M=M+1
-@ARG
-D=M
+// c_push argument 1
 @1
-A=D+A
+D=A
+@ARG
+A=M+D
 D=M
 @SP
 A=M
 M=D
 @SP
 M=M+1
+// sub
 @SP
 M=M-1
 A=M
@@ -157,26 +200,29 @@ A=M
 M=M-D
 @SP
 M=M+1
-@THIS
-D=M
+// c_push this 6
 @6
-A=D+A
+D=A
+@THIS
+A=M+D
 D=M
 @SP
 A=M
 M=D
 @SP
 M=M+1
-@THIS
-D=M
+// c_push this 6
 @6
-A=D+A
+D=A
+@THIS
+A=M+D
 D=M
 @SP
 A=M
 M=D
 @SP
 M=M+1
+// add
 @SP
 M=M-1
 A=M
@@ -187,6 +233,7 @@ A=M
 M=M+D
 @SP
 M=M+1
+// sub
 @SP
 M=M-1
 A=M
@@ -197,6 +244,7 @@ A=M
 M=M-D
 @SP
 M=M+1
+// c_push temp 6
 @11
 D=M
 @SP
@@ -204,6 +252,7 @@ A=M
 M=D
 @SP
 M=M+1
+// add
 @SP
 M=M-1
 A=M
